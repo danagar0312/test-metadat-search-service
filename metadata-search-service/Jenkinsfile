@@ -1,0 +1,21 @@
+node{
+    def app
+    def registry = 'pingintelligence/metadata-search-image'
+    stage("SCM Checkout"){
+	    checkout scm
+    }
+    
+    stage('Prepare repository') {
+        dir('metadata-search-service/') {
+		      app = docker.build registry
+	      }
+    }
+    stage('Push Docker Image'){
+	    
+   	docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_id'  ) {
+            app.push("latest")
+        }
+    }
+	
+	
+}
